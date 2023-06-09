@@ -1,4 +1,3 @@
-<!-- options.html -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -9,30 +8,40 @@
   </head>
 
   <body>
-    <div class="header-logo">
-      <img src="../img/logo-h.png" alt="Logo" class="main-logo" />
-      <h1>EXTENSÃO ARTHUR HENDRICH</h1>
+    <div class="container-up">
+      <div class="header-logo">
+        <img src="../img/logo-h.png" alt="Logo" class="main-logo" />
+        <h1>Strateegia</h1>
+      </div>
+      <div class="profile-container">
+        <div class="profile-image">
+          <img src="../img/profile.jpg" alt="profile" class="profile-picture"/>
+        </div>
+        <div class="profile-description">
+          <h3>Chris Bumpsted o CIBAM</h3>
+          <div class="options-number" data-min="0" data-max="10000">
+            <div class="title">Nível:</div>
+            <input id="option-level-value" type="number" value="" disabled />
+          </div>          
+          <div class="options-number" data-min="0" data-max="10000">
+            <div class="title">XP:</div>
+            <input id="option-points" type="number" value="" disabled />
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="container">
-      <div class="options-slider" data-min="1" data-max="5">
-        <div class="title">NÍVEL:</div>
-        <input id="option-level" type="range" value="1" disabled />
-      </div>
 
-      <div class="options-number" data-min="0" data-max="10000">
-        <div class="title">PONTOS:</div>
-        <input id="option-points" type="number" value="" disabled />
-      </div>
+    <div class="container">
 
       <div class="options-list">
-        <div class="title">Progresso</div>
+        <div class="title">Missoes Concluidas</div>
         <ul id="conquests-container">
           <!-- As conquistas serão adicionadas dinamicamente aqui -->
         </ul>
       </div>
       <div>
         <h1>Missoes</h1>
-        <button>Atualizar quadro</button>
+        <button id="update-button">Atualizar quadro</button>
         <div class="options-list">
           <ul id="missions-container">
             <!-- As missões serão adicionadas dinamicamente aqui -->
