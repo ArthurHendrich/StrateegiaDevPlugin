@@ -19,38 +19,62 @@ var Missions = [
   // adicione mais missões conforme necessário
 ];
 
-function completeMission(missionId) {
-  // Encontre a missão pelo ID
-  var mission = Missions.find((mission) => mission.id === missionId);
+var NiveiDeIntegriade =  [
+  {
+    id: 1,
+    name: "Iniciante",
+    descricao: "Pessoas Iniciantes"
+  },
+  {
+    id: 2,
+    name: "Intermediário",
+    descricao: "Pessoas Intermediárias"
+  },
+  {
+    id: 3,
+    name: "Avançado",
+    descricao: "Pessoas Avançadas"
+  }
+]
 
-  // Marque a missão como concluída
-  if (mission) mission.completed = true;
+class InteractMissionAndLevel: {
+  function completeMission(missionId) {
+    // Encontre a missão pelo ID
+    var mission = Missions.find((mission) => mission.id === missionId);
 
-  // Verifique se o nível do usuário deve ser atualizado
-  checkLevelUpgrade();
-}
+    // Marque a missão como concluída
+    if (mission) mission.completed = true;
 
-function getScore() {
-  // Calcule a pontuação total das missões concluídas
-  var score = Missions.reduce((total, mission) => {
-    if (mission.completed) {
-      return total + mission.points;
-    } else {
-      return total;
-    }
-  }, 0);
-
-  return score;
-}
-
-function checkLevelUpgrade() {
-  var score = getScore();
-  
-  // Aqui você pode definir a lógica para atualizar o nível do usuário
-  // No exemplo abaixo, o nível do usuário é atualizado para "Médio" quando eles atingem 1000 pontos
-  if (score >= 1000) {
-    DefaultExtensionOptions2.level = "Médio";
+    // Verifique se o nível do usuário deve ser atualizado
+    checkLevelUpgrade();
   }
 
-  // Você pode adicionar mais condições para outros níveis aqui
+  function getScore() {
+    // Calcule a pontuação total das missões concluídas
+    var score = Missions.reduce((total, mission) => {
+      if (mission.completed) {
+        return total + mission.points;
+      } else {
+        return total;
+      }
+    }, 0);
+
+    return score;
+  }
+
+  function checkLevelUpgrade() {
+    var score = getScore();
+    
+    // Aqui você pode definir a lógica para atualizar o nível do usuário
+    // No exemplo abaixo, o nível do usuário é atualizado para "Médio" quando eles atingem 1000 pontos
+    if (score >= 1000) {
+      DefaultExtensionOptions2.level = "Médio";
+    }
+
+    // Você pode adicionar mais condições para outros níveis aqui
+  }
+
+  function verifyChangeNivel() {
+    // Aqui vai subir o nível do código. 
+  }
 }
