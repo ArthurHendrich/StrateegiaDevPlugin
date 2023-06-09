@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "Strateegia Plug-in",
+    "version": "1.0.0",
+    "description": "Um plug-in para escolher níveis de experiência na plataforma Strateegia",
+    "permissions": [
+      "activeTab",
+      "storage"
+    ],
+    "action": {
+      "default_popup": "html/options.html"
+    },
+    "background": {
+      "service_worker": "js/loader.js"
+    }
+  }
+  

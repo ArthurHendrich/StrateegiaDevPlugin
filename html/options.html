@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Extension Options</title>
+    <link rel="stylesheet" type="text/css" href="../css/options.css">
+    <link rel="stylesheet" type="text/css" href="../css/material-icon.css">
+    <script src="../js/options.js"></script>
+</head>
+
+<body>
+    <div class="header-logo">
+        <img src="../img/logo-h.png" alt="Logo" class="main-logo">
+        <h1>EXTENSÃO ARTHUR HENDRICH</h1>
+    </div>
+    <div class="container">
+
+        <div class="options-slider" data-min="1" data-max="5">
+            <div class="title">NÍVEL:</div>
+            <input id="option-level" type="range" value="1" />
+        </div>
+
+        <div class="options-number" data-min="0" data-max="10000">
+            <div class="title">PONTOS:</div>
+            <input id="option-points" type="number" value="0" disabled />
+        </div>
+
+        <div class="options-number" data-min="0" data-max="100">
+            <div class="title">PROGRESSO:</div>
+            <input id="option-progress" type="number" value="0" disabled />
+        </div>
+
+        <div class="options-text">
+            <div class="title">CONQUISTAS:</div>
+            <textarea id="option-achievements" disabled></textarea>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
