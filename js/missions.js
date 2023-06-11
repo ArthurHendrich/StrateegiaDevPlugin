@@ -20,16 +20,16 @@ let MissionsIniciante = [
 
 let MissaoIntermediario = [
   {
-    id: 1,
+    id: 3,
     name: 'Missão 3',
-    description: 'Esta é a descrição da Missão 1',
+    description: 'Esta é a descrição da Missão 3',
     points: 50,
     completed: false,
   },
   {
-    id: 2,
+    id: 4,
     name: 'Missão 4',
-    description: 'Esta é a descrição da Missão 2',
+    description: 'Esta é a descrição da Missão 4',
     points: 50,
     completed: false,
   },
@@ -38,16 +38,16 @@ let MissaoIntermediario = [
 
 let MissionsAvancado = [
   {
-    id: 1,
+    id: 5,
     name: 'Missão 5',
-    description: 'Esta é a descrição da Missão 1',
+    description: 'Esta é a descrição da Missão 5',
     points: 50,
     completed: false,
   },
   {
-    id: 2,
+    id: 6,
     name: 'Missão 6',
-    description: 'Esta é a descrição da Missão 2',
+    description: 'Esta é a descrição da Missão 6',
     points: 50,
     completed: false,
   },
@@ -55,6 +55,7 @@ let MissionsAvancado = [
 ];
 
 let Missions = MissionsIniciante;
+let ConcludedMissions = [];
 
 function getUserLevel() {
   return parseInt(localStorage.getItem('userLevel')) || 1;
@@ -65,12 +66,13 @@ function updateUserScore(points) {
   localStorage.setItem('userScore', score + points);
 
   updateUserLevel();
+  updateScore(); // Adicione essa linha para atualizar os pontos na tela
 }
 
 function updateUserLevel() {
   let level = getUserLevel();
   let score = getScore();
-  
+
   if (score >= 100 && score < 200) {
     level = 2;
     Missions = MissaoIntermediario;
@@ -78,7 +80,7 @@ function updateUserLevel() {
     level = 3;
     Missions = MissionsAvancado;
   }
-  
+
   localStorage.setItem('userLevel', level);
 }
 
@@ -95,14 +97,27 @@ function getLevelString() {
 
   return 'Nível desconhecido';
 }
+function showPointsPopup(points) {
+  alert(`Você ganhou ${points} pontos!`);
+}
 
-
-function markMissionCompleted(missionId) {
+function markMissionCompleted(missionId, completed) {
   const mission = Missions.find((mission) => mission.id === missionId);
 
   if (mission) {
-    mission.completed = true;
-    updateUserScore(mission.points);
+    mission.completed = completed;
+    updateUserScore(completed ? mission.points : -mission.points);
+    if (completed) {
+      moveMissionToConquests(missionId);
+    } else {
+      moveMissionToMissions(missionId);
+    }
+    saveMissions();
+    loadMissions();
+
+    updateScore(); // Adicione essa linha para atualizar os pontos na tela
+
+    showPointsPopup(completed ? mission.points : 0);
   }
 }
 
@@ -110,53 +125,33 @@ function getScore() {
   return parseInt(localStorage.getItem('userScore')) || 0;
 }
 
-
-function updateUserLevel() {
-  let level = localStorage.getItem('userLevel') || '1';
-  let score = getScore();
-  
-  if (score >= 100 && score < 200) {
-    level = '2';
-    Missions = MissaoIntermediario;
-  } else if (score >= 200) {
-    level = '3';
-    Missions = MissionsAvancado;
-  }
-  
-  localStorage.setItem('userLevel', level);
-}
-
-function getLevelString() {
-  const level = getUserLevel();
-
-  if (level === '1') {
-    return 'Iniciante';
-  } else if (level === '2') {
-    return 'Intermediário';
-  } else if (level === '3') {
-    return 'Avançado';
-  }
-
-  return 'Nível desconhecido';
+function saveMissions() {
+  localStorage.setItem('missions', JSON.stringify(Missions));
+  localStorage.setItem('concludedMissions', JSON.stringify(ConcludedMissions));
 }
 
 function loadMissions() {
   const level = getUserLevel();
-  switch(level) {
+  switch (level) {
     case 1:
-      Missions = MissionsIniciante;
+      Missions =
+        JSON.parse(localStorage.getItem('missions')) || MissionsIniciante;
       break;
     case 2:
-      Missions = MissaoIntermediario;
+      Missions =
+        JSON.parse(localStorage.getItem('missions')) || MissaoIntermediario;
       break;
     case 3:
-      Missions = MissionsAvancado;
+      Missions =
+        JSON.parse(localStorage.getItem('missions')) || MissionsAvancado;
       break;
     default:
       console.error('Unknown level');
       return;
   }
 
+  ConcludedMissions =
+    JSON.parse(localStorage.getItem('concludedMissions')) || [];
 
   const missionsContainer = document.getElementById('missions-container');
   const conquestsContainer = document.getElementById('conquests-container');
@@ -166,24 +161,57 @@ function loadMissions() {
 
   Missions.forEach((mission) => {
     const listItem = document.createElement('li');
-    const checkbox = document.createElement('input');
-    const label = document.createElement('label');
+    const missionName = document.createElement('span');
+    const descriptionButton = document.createElement('button');
+    const missionDescription = document.createElement('p');
 
-    checkbox.type = 'checkbox';
-    checkbox.id = 'mission-' + mission.id;
-    checkbox.checked = mission.completed;
-    checkbox.addEventListener('change', function () {
-      onMissionCompleted(mission.id, this.checked);
+    missionName.textContent = mission.name;
+
+    if (!mission.completed) {
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = mission.completed;
+      checkbox.addEventListener('change', function () {
+        markMissionCompleted(mission.id, this.checked);
+      });
+
+      listItem.appendChild(checkbox);
+    }
+
+    listItem.appendChild(missionName);
+
+    descriptionButton.textContent = 'Mostrar Descrição';
+    descriptionButton.addEventListener('click', function () {
+      missionDescription.textContent = mission.description;
     });
 
-    label.setAttribute('for', 'mission-' + mission.id);
-    label.textContent = mission.name;
+    listItem.appendChild(descriptionButton);
+    listItem.appendChild(missionDescription);
 
-    const button = createMissionButton(mission);
+    if (mission.completed) {
+      conquestsContainer.appendChild(listItem);
+    } else {
+      missionsContainer.appendChild(listItem);
+    }
+  });
 
-    listItem.appendChild(checkbox);
-    listItem.appendChild(label);
-    listItem.appendChild(button);
+  ConcludedMissions.forEach((mission) => {
+    const listItem = document.createElement('li');
+    const missionName = document.createElement('span');
+    const descriptionButton = document.createElement('button');
+    const missionDescription = document.createElement('p');
+
+    missionName.textContent = mission.name;
+
+    listItem.appendChild(missionName);
+
+    descriptionButton.textContent = 'Mostrar Descrição';
+    descriptionButton.addEventListener('click', function () {
+      missionDescription.textContent = mission.description;
+    });
+
+    listItem.appendChild(descriptionButton);
+    listItem.appendChild(missionDescription);
 
     if (mission.completed) {
       conquestsContainer.appendChild(listItem);
@@ -200,17 +228,27 @@ function updateScore() {
 }
 
 function moveMissionToConquests(missionId) {
-  const missionElement = document.getElementById('mission-' + missionId);
-  const listItem = missionElement.parentNode;
-  const conquestsContainer = document.getElementById('conquests-container');
+  const missionIndex = Missions.findIndex(
+    (mission) => mission.id === missionId
+  );
+  if (missionIndex !== -1) {
+    const mission = Missions[missionIndex];
+    Missions.splice(missionIndex, 1);
+    mission.completed = true;
+    ConcludedMissions.push(mission);
+  }
+}
 
-  const clonedItem = listItem.cloneNode(true);
-  const checkbox = clonedItem.querySelector('input[type="checkbox"]');
-  checkbox.parentNode.removeChild(checkbox);
-
-  conquestsContainer.appendChild(clonedItem);
-
-  listItem.parentNode.removeChild(listItem);
+function moveMissionToMissions(missionId) {
+  const missionIndex = ConcludedMissions.findIndex(
+    (mission) => mission.id === missionId
+  );
+  if (missionIndex !== -1) {
+    const mission = ConcludedMissions[missionIndex];
+    ConcludedMissions.splice(missionIndex, 1);
+    mission.completed = false;
+    Missions.push(mission);
+  }
 }
 
 window.addEventListener('DOMContentLoaded', function () {
@@ -227,7 +265,9 @@ window.addEventListener('DOMContentLoaded', function () {
         moveMissionToConquests(mission.id);
       }
     });
+    saveMissions();
     updateScore();
+    loadMissions();
   });
 
   const changeLevelButton = document.getElementById('change-level-button');
@@ -235,6 +275,7 @@ window.addEventListener('DOMContentLoaded', function () {
     const newLevel = document.getElementById('change-level').value;
     localStorage.setItem('userLevel', newLevel);
     document.getElementById('option-level').value = newLevel;
+    loadMissions();
   });
 
   document.getElementById('option-level').value = getUserLevel();
