@@ -60,17 +60,17 @@ class MissionManager {
       "missionsIniciante",
       [
         new Mission(1, "Divergindo ideias", "Faca um ponto de convergência na sua jornada para coletar ideias em uma discussão com a sua equipe!", 25, false),
-        new Mission(2, "Convergir para escolher", "Lorem Ipsum", 25, false),
-        new Mission(3, "Um aviso para o time", "Lorem Ipsum", 25, false),
-        new Mission(4, "Compartilhe sua discussao", "Lorem Ipsum", 25, false),
+        new Mission(2, "Convergir para escolher", "Faça um ponto de convergência", 25, false),
+        new Mission(3, "Um aviso para o time", "Procure por um ponto de aviso na sua tela", 25, false),
+        new Mission(4, "Compartilhe sua discussao", "Apresente o strateegia para outras pessoas", 25, false),
       ]
     );
 
     this.missaoIntermediario = this.loadMissionsFromLocalStorage(
       "missaoIntermediario",
       [
-        new Mission(5, "Responda um comentario", "Lorem Ipsum", 25, false),
-        new Mission(6, "Utilize 10 fichas", "Lorem Ipsum", 25, false),
+        new Mission(5, "Responda um comentario", "Interaja com os pontos de divergência", 25, false),
+        new Mission(6, "Utilize 10 fichas", "Analise a jornada", 25, false),
         new Mission(
           7,
           "Coloque um board para analise",
