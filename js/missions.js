@@ -31,13 +31,16 @@ class User {
 
   updateScore(points) {
     this.score += points;
+
     localStorage.setItem("userScore", this.score);
+
     this.updateUserLevel();
 
     if (this.score >= 300) {
       const missionsLabel = document.getElementById("missions-label");
       if (missionsLabel) {
         missionsLabel.style.display = "none";
+        localStorage.setItem("missionsLabelHidden", true); 
       }
     }
   }
@@ -59,41 +62,29 @@ class MissionManager {
     this.missionsIniciante = this.loadMissionsFromLocalStorage(
       "missionsIniciante",
       [
-        new Mission(1, "Divergindo ideias", "Faca um ponto de convergência na sua jornada para coletar ideias em uma discussão com a sua equipe!", 25, false),
-        new Mission(2, "Convergir para escolher", "Faça um ponto de convergência", 25, false),
-        new Mission(3, "Um aviso para o time", "Procure por um ponto de aviso na sua tela", 25, false),
-        new Mission(4, "Compartilhe sua discussao", "Apresente o strateegia para outras pessoas", 25, false),
+        new Mission(1, "Divergindo ideias", "Faca um ponto de convergência na sua jornada para coletar ideias em uma discussão com a sua equipe!", 24, false),
+        new Mission(2, "Convergir para escolher", "Faça um ponto de convergência", 24, false),
+        new Mission(3, "Um aviso para o time", "Procure por um ponto de aviso na sua tela", 24, false),
+        new Mission(4, "Compartilhe sua discussao", "Apresente o strateegia para outras pessoas", 24, false),
       ]
     );
 
     this.missaoIntermediario = this.loadMissionsFromLocalStorage(
       "missaoIntermediario",
       [
-        new Mission(5, "Responda um comentario", "Interaja com os pontos de divergência", 25, false),
-        new Mission(6, "Utilize 10 fichas", "Analise a jornada", 25, false),
-        new Mission(
-          7,
-          "Coloque um board para analise",
-          "Lorem Ipsum",
-          25,
-          false
-        ),
-        new Mission(
-          8,
-          "Crie 5 pontos de convergencia",
-          "Lorem Ipsum",
-          25,
-          false
-        ),
+        new Mission(5, "Responda um comentario", "Interaja com os pontos de divergência", 24, false),
+        new Mission(6, "Utilize 10 fichas", "Analise a jornada", 24, false),
+        new Mission(7, "Coloque um board para analise", "Lorem Ipsum", 24, false),
+        new Mission(8, "Crie 5 pontos de convergencia", "Lorem Ipsum", 24, false),
       ]
     );
 
     this.missionsAvancado = this.loadMissionsFromLocalStorage(
       "missionsAvancado",
       [
-        new Mission(9, "Avalie o app", "Lorem Ipsum", 25, false),
-        new Mission(10, "Analise um board", "Lorem Ipsum", 25, false),
-        new Mission(11, "Realize um teste", "Lorem Ipsum", 50, false),
+        new Mission(9, "Avalie o app", "Lorem Ipsum", 24, false),
+        new Mission(10, "Analise um board", "Lorem Ipsum", 24, false),
+        new Mission(11, "Realize um teste", "Lorem Ipsum", 49, false),
       ]
     );
 
@@ -104,6 +95,7 @@ class MissionManager {
     );
     this.user = new User(this);
     this.uiManager = new UIManager(this);
+    this.checkMissionsLabelVisibility();
   }
 
   getMissions() {
@@ -143,11 +135,14 @@ class MissionManager {
 
       if (completed) {
         this.moveMissionToConquests(missionId);
-        if (this.checkLevelUp()) {
-          this.levelUp();
-        }
       } else {
         this.moveMissionToMissions(missionId);
+      }
+
+      this.user.updateScore(1);
+
+      if(completed && this.checkLevelUp()) {
+        this.levelUp();
       }
 
       this.saveMissions(() => {
@@ -162,6 +157,8 @@ class MissionManager {
           missionsLabel.style.display = "none";
         }
       }
+
+      this.user.updateUserLevel();
     }
   }
 
@@ -175,7 +172,6 @@ class MissionManager {
       mission.completed = true;
       this.concludedMissions.push(mission);
 
-      // We need to update the local mission arrays
       switch (this.user.level) {
         case 1:
           this.missionsIniciante = this.missionsIniciante.filter(
@@ -210,7 +206,16 @@ class MissionManager {
 
   checkLevelUp() {
     const nextLevel = this.user.level + 1;
-
+    if (this.user.score == 99) {
+      this.user.score+= 1;
+    }
+    if (this.user.score == 199) {
+      this.user.score+= 1;
+    }
+    if (this.user.score == 299) {
+      this.user.score+= 1;
+    }
+    
     if (nextLevel === 2 && this.user.score >= 100 && this.user.score < 200) {
       return true;
     } else if (
@@ -274,9 +279,17 @@ class MissionManager {
       JSON.stringify(this.concludedMissions)
     );
 
-    // Call the callback function after the missions are saved
     if (callback) {
       callback();
+    }
+  }
+
+  checkMissionsLabelVisibility() {
+    if (localStorage.getItem("missionsLabelHidden") === "true") {
+      const missionsLabel = document.getElementById("missions-label");
+      if (missionsLabel) {
+        missionsLabel.style.display = "none";
+      }
     }
   }
 }
