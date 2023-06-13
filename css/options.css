@@ -16,6 +16,8 @@ body{
     width: 100%;
     justify-content: center;
     align-items: center;
+    width: 700px;
+    height: 600px;
 }
 
 .container-all {
