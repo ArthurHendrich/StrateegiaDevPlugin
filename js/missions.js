@@ -6,7 +6,7 @@ class User {
   }
 
   getUserLevel() {
-    return parseInt(localStorage.getItem("userLevel")) || 1;
+    return parseInt(localStorage.getItem('userLevel')) || 1;
   }
 
   updateUserLevel() {
@@ -20,27 +20,27 @@ class User {
       this.level = 4;
     }
 
-    localStorage.setItem("userLevel", this.level);
+    localStorage.setItem('userLevel', this.level);
 
-    this.missionManager.updateMissions(this.level); 
+    this.missionManager.updateMissions(this.level);
   }
 
   getScore() {
-    return parseInt(localStorage.getItem("userScore")) || 0;
+    return parseInt(localStorage.getItem('userScore')) || 0;
   }
 
   updateScore(points) {
     this.score += points;
 
-    localStorage.setItem("userScore", this.score);
+    localStorage.setItem('userScore', this.score);
 
     this.updateUserLevel();
 
     if (this.score >= 300) {
-      const missionsLabel = document.getElementById("missions-label");
+      const missionsLabel = document.getElementById('missions-label');
       if (missionsLabel) {
-        missionsLabel.style.display = "none";
-        localStorage.setItem("missionsLabelHidden", true); 
+        missionsLabel.style.display = 'none';
+        localStorage.setItem('missionsLabelHidden', true);
       }
     }
   }
@@ -58,39 +58,81 @@ class Mission {
 
 class MissionManager {
   constructor() {
-    const userLevel = parseInt(localStorage.getItem("userLevel")) || 1;
+    const userLevel = parseInt(localStorage.getItem('userLevel')) || 1;
     this.missionsIniciante = this.loadMissionsFromLocalStorage(
-      "missionsIniciante",
+      'missionsIniciante',
       [
-        new Mission(1, "Divergindo ideias", "Faca um ponto de convergência na sua jornada para coletar ideias em uma discussão com a sua equipe!", 24, false),
-        new Mission(2, "Convergir para escolher", "Faça um ponto de convergência", 24, false),
-        new Mission(3, "Um aviso para o time", "Procure por um ponto de aviso na sua tela", 24, false),
-        new Mission(4, "Compartilhe sua discussao", "Apresente o strateegia para outras pessoas", 24, false),
+        new Mission(
+          1,
+          'Divergindo ideias',
+          'Lorem Ipsum',
+          24,
+          false
+        ),
+        new Mission(
+          2,
+          'Convergir para escolher',
+          'Lorem Ipsum',
+          24,
+          false
+        ),
+        new Mission(
+          3,
+          'Um aviso para o time',
+          'Lorem Ipsum',
+          24,
+          false
+        ),
+        new Mission(
+          4,
+          'Compartilhe sua discussao',
+          'Lorem Ipsum',
+          24,
+          false
+        ),
       ]
     );
 
     this.missaoIntermediario = this.loadMissionsFromLocalStorage(
-      "missaoIntermediario",
+      'missaoIntermediario',
       [
-        new Mission(5, "Responda um comentario", "Interaja com os pontos de divergência", 24, false),
-        new Mission(6, "Utilize 10 fichas", "Analise a jornada", 24, false),
-        new Mission(7, "Coloque um board para analise", "Lorem Ipsum", 24, false),
-        new Mission(8, "Crie 5 pontos de convergencia", "Lorem Ipsum", 24, false),
+        new Mission(
+          5,
+          'Responda um comentario',
+          'Lorem Ipsum',
+          24,
+          false
+        ),
+        new Mission(6, 'Utilize 10 fichas', 'Analise a jornada', 24, false),
+        new Mission(
+          7,
+          'Coloque um board para analise',
+          'Lorem Ipsum',
+          24,
+          false
+        ),
+        new Mission(
+          8,
+          'Crie 5 pontos de convergencia',
+          'Lorem Ipsum',
+          24,
+          false
+        ),
       ]
     );
 
     this.missionsAvancado = this.loadMissionsFromLocalStorage(
-      "missionsAvancado",
+      'missionsAvancado',
       [
-        new Mission(9, "Avalie o app", "Lorem Ipsum", 24, false),
-        new Mission(10, "Analise um board", "Lorem Ipsum", 24, false),
-        new Mission(11, "Realize um teste", "Lorem Ipsum", 49, false),
+        new Mission(9, 'Avalie o app', 'Lorem Ipsum', 24, false),
+        new Mission(10, 'Analise um board', 'Lorem Ipsum', 24, false),
+        new Mission(11, 'Realize um teste', 'Lorem Ipsum', 49, false),
       ]
     );
 
     this.missions = this.loadCurrentMissions(userLevel);
     this.concludedMissions = this.loadMissionsFromLocalStorage(
-      "concludedMissions",
+      'concludedMissions',
       []
     );
     this.user = new User(this);
@@ -141,7 +183,7 @@ class MissionManager {
 
       this.user.updateScore(1);
 
-      if(completed && this.checkLevelUp()) {
+      if (completed && this.checkLevelUp()) {
         this.levelUp();
       }
 
@@ -152,9 +194,9 @@ class MissionManager {
       });
 
       if (this.user.score >= 300) {
-        const missionsLabel = document.getElementById("missions-label");
+        const missionsLabel = document.getElementById('missions-label');
         if (missionsLabel) {
-          missionsLabel.style.display = "none";
+          missionsLabel.style.display = 'none';
         }
       }
 
@@ -207,15 +249,15 @@ class MissionManager {
   checkLevelUp() {
     const nextLevel = this.user.level + 1;
     if (this.user.score == 99) {
-      this.user.score+= 1;
+      this.user.score += 1;
     }
     if (this.user.score == 199) {
-      this.user.score+= 1;
+      this.user.score += 1;
     }
     if (this.user.score == 299) {
-      this.user.score+= 1;
+      this.user.score += 1;
     }
-    
+
     if (nextLevel === 2 && this.user.score >= 100 && this.user.score < 200) {
       return true;
     } else if (
@@ -263,19 +305,19 @@ class MissionManager {
 
   saveMissions(callback) {
     localStorage.setItem(
-      "missionsIniciante",
+      'missionsIniciante',
       JSON.stringify(this.missionsIniciante)
     );
     localStorage.setItem(
-      "missaoIntermediario",
+      'missaoIntermediario',
       JSON.stringify(this.missaoIntermediario)
     );
     localStorage.setItem(
-      "missionsAvancado",
+      'missionsAvancado',
       JSON.stringify(this.missionsAvancado)
     );
     localStorage.setItem(
-      "concludedMissions",
+      'concludedMissions',
       JSON.stringify(this.concludedMissions)
     );
 
@@ -285,10 +327,10 @@ class MissionManager {
   }
 
   checkMissionsLabelVisibility() {
-    if (localStorage.getItem("missionsLabelHidden") === "true") {
-      const missionsLabel = document.getElementById("missions-label");
+    if (localStorage.getItem('missionsLabelHidden') === 'true') {
+      const missionsLabel = document.getElementById('missions-label');
       if (missionsLabel) {
-        missionsLabel.style.display = "none";
+        missionsLabel.style.display = 'none';
       }
     }
   }
@@ -302,23 +344,23 @@ class UIManager {
   }
 
   createListItem(mission) {
-    const listItem = document.createElement("li");
-    const missionName = document.createElement("span");
-    const descriptionButton = document.createElement("button");
-    const missionDescription = document.createElement("p");
-    const missionStart = document.createElement("span");
-    const missionButton = document.createElement("button");
+    const listItem = document.createElement('li');
+    const missionName = document.createElement('span');
+    const descriptionButton = document.createElement('button');
+    const missionDescription = document.createElement('p');
+    const missionStart = document.createElement('span');
+    const missionButton = document.createElement('button');
+    const checkbox = document.createElement('input');
 
     let isDescriptionVisible = false;
 
     missionName.textContent = mission.name;
 
     if (!mission.completed) {
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.id = "mission-" + mission.id;
+      checkbox.type = 'checkbox';
+      checkbox.id = 'mission-' + mission.id;
       checkbox.checked = mission.completed;
-      checkbox.addEventListener("change", () => {
+      checkbox.addEventListener('change', () => {
         this.missionManager.markMissionCompleted(mission.id, checkbox.checked);
       });
 
@@ -326,25 +368,26 @@ class UIManager {
     }
 
     listItem.appendChild(missionName);
-
-    descriptionButton.textContent = "?";
-    descriptionButton.textContent = "?";
-    descriptionButton.addEventListener("click", () => {
+    checkbox.classList.add('checkbox');
+    descriptionButton.textContent = '?';
+    descriptionButton.textContent = '?';
+    descriptionButton.classList.add('description-button');
+    descriptionButton.addEventListener('click', () => {
       if (!isDescriptionVisible) {
         missionDescription.textContent = mission.description;
-        missionStart.textContent = "Inicie o tutorial para uma missao guiada";
-        missionButton.textContent = "Iniciar";
+        missionStart.textContent = 'Inicie o tutorial para uma missao guiada';
+        missionButton.textContent = 'Iniciar';
 
-        missionStart.style.display = "block";
-        missionButton.style.display = "block"; 
+        missionStart.style.display = 'block';
+        missionButton.style.display = 'block';
         listItem.appendChild(missionStart);
         listItem.appendChild(missionButton);
       } else {
-        missionDescription.textContent = "";
-        missionStart.textContent = "";
-        missionButton.textContent = "";
-        missionStart.style.display = "none"; 
-        missionButton.style.display = "none"; 
+        missionDescription.textContent = '';
+        missionStart.textContent = '';
+        missionButton.textContent = '';
+        missionStart.style.display = 'none';
+        missionButton.style.display = 'none';
       }
       isDescriptionVisible = !isDescriptionVisible;
     });
@@ -356,11 +399,11 @@ class UIManager {
   }
 
   loadMissions() {
-    const missionsContainer = document.getElementById("missions-container");
-    const conquestsContainer = document.getElementById("conquests-container");
+    const missionsContainer = document.getElementById('missions-container');
+    const conquestsContainer = document.getElementById('conquests-container');
 
-    missionsContainer.innerHTML = "";
-    conquestsContainer.innerHTML = "";
+    missionsContainer.innerHTML = '';
+    conquestsContainer.innerHTML = '';
 
     const missions = this.missionManager.getMissions();
     const concludedMissions = this.missionManager.getConcludedMissions();
@@ -381,42 +424,42 @@ class UIManager {
   }
 
   updateScore() {
-    const scoreInput = document.getElementById("option-points");
+    const scoreInput = document.getElementById('option-points');
     const score = this.missionManager.user.getScore();
     scoreInput.value = score;
 
     // update the level
-    const levelInput = document.getElementById("option-level-value");
+    const levelInput = document.getElementById('option-level-value');
     const level = this.missionManager.user.getUserLevel();
     switch (level) {
       case 1:
-        levelInput.value = "Iniciante";
+        levelInput.value = 'Iniciante';
         break;
       case 2:
-        levelInput.value = "Intermediario";
+        levelInput.value = 'Intermediario';
         break;
       case 3:
-        levelInput.value = "Avancado";
+        levelInput.value = 'Avancado';
         break;
     }
   }
 
   showPointsPopup(points) {
-    alert(`Você ganhou ${points} pontos!`);
+    alert(`Você ganhou ${points+1} pontos!`);
   }
 }
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener('DOMContentLoaded', () => {
   const missionManager = new MissionManager();
 
-  const updateButton = document.querySelector("button");
-  updateButton.addEventListener("click", () => {
+  const updateButton = document.querySelector('button');
+  updateButton.addEventListener('click', () => {
     const missionsToComplete = [];
 
     const missions = missionManager.getMissions();
 
     missions.forEach((mission) => {
-      const checkbox = document.getElementById("mission-" + mission.id);
+      const checkbox = document.getElementById('mission-' + mission.id);
       if (checkbox.checked) {
         missionsToComplete.push(mission.id);
       }

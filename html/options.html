@@ -2,31 +2,41 @@
 <html>
   <head>
     <title>My Extension Options</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="../css/options.css" />
     <link rel="stylesheet" type="text/css" href="../css/material-icon.css" />
     <script src="../js/missions.js"></script>
   </head>
 
   <body>
-    <div class="container-all"> 
+    <div class="container-all">
       <div class="container-up">
         <div class="header-logo">
-          <img src="../img/logo-h.png" alt="Logo" class="main-logo" />
-          <h1>Strateegia</h1>
+          <!-- <h1>Leveelling</h1> -->
+          <img src="https://media.discordapp.net/attachments/1028417052316278954/1117997786768625704/image.png" alt="Leveelling-logo">
         </div>
         <div class="profile-container">
           <div class="profile-image">
-            <img src="../img/profile.jpg" alt="profile" class="profile-picture" />
+            <img
+              src="../img/profile.jpg"
+              alt="profile"
+              class="profile-picture"
+            />
           </div>
           <div class="profile-description">
-            <h3>Chris Bumpsted o CIBAM</h3>
+            <h3>Chris Bumpsted</h3>
             <div class="options-number" data-min="0" data-max="10000">
-              <div class="title">Nível:</div>
-              <input id="option-level-value" type="text" value="" disabled />
+              <div class="input-option">
+                <div class="title">Nível:</div>
+                <input id="option-level-value" type="text" value="" disabled />
+              </div>
             </div>
             <div class="options-number" data-min="0" data-max="10000">
-              <div class="title">XP:</div>
-              <input id="option-points" type="number" value="" disabled />
+              <div class="input-option">
+                <div class="title">XP:</div>
+                <input id="option-points" type="number" value="" disabled />
+              </div>
             </div>
           </div>
         </div>
@@ -34,20 +44,23 @@
 
       <div class="container-missions">
         <div class="options-list">
-          <div class="title">Missoes Concluidas</div>
-          <ul id="conquests-container">
-            <!-- As conquistas serão adicionadas dinamicamente aqui -->
-          </ul>
+          <div class="header">
+            <h1>Progresso</h1>
+          </div>
+          <div class="conquest-list">
+            <ul id="conquests-container">
+              <!-- As conquistas serão adicionadas dinamicamente aqui -->
+            </ul>
+          </div>
         </div>
-        <div>
+        <div class="missions">
           <h1 id="missions-label">Missoes</h1>
-          <div class="options-list">
+          <div class="options-list2">
             <ul id="missions-container">
               <!-- As missões serão adicionadas dinamicamente aqui -->
             </ul>
           </div>
         </div>
-
       </div>
     </div>
   </body>
